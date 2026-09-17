@@ -1,0 +1,1120 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Projection · At-Issueness · Pluggability — Demo</title>
+<link href="https://fonts.googleapis.com/css?family=Noto+Sans:400,700|Noto+Serif:400,700|Playfair+Display:700|Lato:400,700" rel="stylesheet">
+<style>
+html,body{height:100%; width:100%; margin:0; padding:0;}
+body{ background:#ffffff; }
+*{box-sizing:border-box;}
+
+.magpie-view{ max-width:640px; margin:0 auto; padding:40px 20px 70px; }
+.magpie-view-title{
+  color:rgba(0,0,0,0.87);
+  font-family:"Playfair Display","Noto Serif",serif;
+  font-size:30px;
+  text-align:center;
+  line-height:1.3;
+}
+.magpie-view-text{
+  color:rgba(0,0,0,0.87);
+  font-size:16px;
+  line-height:26px;
+  font-family:"Lato","Noto Sans",sans-serif;
+  margin:0 auto;
+  max-width:550px;
+}
+.magpie-view-question{
+  color:rgba(0,0,0,0.87);
+  font-size:17px;
+  line-height:27px;
+  font-family:"Lato","Noto Sans",sans-serif;
+  margin:26px auto;
+  max-width:550px;
+  text-align:center;
+}
+.magpie-view-button{
+  background-color:#5187BA;
+  border:none;
+  border-radius:2px;
+  color:white;
+  display:block;
+  font-family:"Lato","Noto Sans",sans-serif;
+  font-size:12px;
+  line-height:20px;
+  font-weight:700;
+  letter-spacing:0.9px;
+  margin:24px auto 8px auto;
+  outline:none;
+  padding:9px 18px;
+  text-transform:uppercase;
+  cursor:pointer;
+}
+.magpie-view-button:hover{ background-color:#324D93; }
+.magpie-view-button.secondary{
+  background-color:transparent;
+  color:#5187BA;
+  border:1px solid #5187BA;
+}
+.magpie-view-button.secondary:hover{ background-color:#f0f4f8; color:#324D93; border-color:#324D93; }
+.magpie-view-button:disabled{ opacity:0.35; cursor:default; }
+.magpie-view-button:disabled:hover{ background-color:#5187BA; }
+
+/* ---------- Landing page ---------- */
+#landingView{ display:block; }
+.kicker{
+  font-family:"Lato","Noto Sans",sans-serif;
+  font-size:12px;
+  letter-spacing:0.9px;
+  text-transform:uppercase;
+  color:#5187BA;
+  text-align:center;
+  margin-bottom:14px;
+  font-weight:700;
+}
+.intro-text{ text-align:center; margin-bottom:10px; }
+
+.instr-box{
+  border:1px solid #d8d8d8;
+  border-radius:4px;
+  padding:22px 24px;
+  margin:34px auto 0;
+  max-width:550px;
+  background:#fafafa;
+}
+.instr-box h3{
+  font-family:"Lato","Noto Sans",sans-serif;
+  font-size:13px;
+  text-transform:uppercase;
+  letter-spacing:0.6px;
+  color:#5187BA;
+  margin:0 0 10px;
+}
+.instr-box p{
+  font-family:"Lato","Noto Sans",sans-serif;
+  font-size:14.5px;
+  line-height:23px;
+  color:rgba(0,0,0,0.75);
+  margin:0 0 10px;
+}
+.instr-lang-toggle{
+  display:flex;
+  gap:8px;
+  margin-bottom:14px;
+}
+.lang-tab{
+  font-family:"Lato","Noto Sans",sans-serif;
+  font-size:11.5px;
+  font-weight:700;
+  letter-spacing:0.6px;
+  text-transform:uppercase;
+  padding:6px 12px;
+  border-radius:14px;
+  border:1px solid #5187BA;
+  color:#5187BA;
+  background:white;
+  cursor:pointer;
+}
+.lang-tab.active{ background:#5187BA; color:white; }
+.instr-content-en{ display:none; }
+
+.phenomenon{
+  padding:36px 0;
+  border-top:1px solid #e5e5e5;
+  text-align:center;
+}
+.ph-name{
+  font-family:"Playfair Display","Noto Serif",serif;
+  font-size:24px;
+  color:rgba(0,0,0,0.87);
+  margin-bottom:6px;
+}
+.ph-underline{
+  width:36px; height:3px; margin:0 auto 14px;
+}
+.ph-pj .ph-underline{ background:#5187BA; }
+.ph-at .ph-underline{ background:#B4694A; }
+.ph-pl .ph-underline{ background:#4C8F72; }
+.ph-desc{
+  font-family:"Lato","Noto Sans",sans-serif;
+  font-size:14px;
+  line-height:22px;
+  color:rgba(0,0,0,0.6);
+  max-width:460px;
+  margin:0 auto 18px;
+}
+.ph-buttons{ display:flex; gap:10px; justify-content:center; flex-wrap:wrap; }
+.ph-buttons .magpie-view-button{ margin:0; }
+.ph-pj .magpie-view-button:not(.secondary){ background:#5187BA; }
+.ph-at .magpie-view-button:not(.secondary){ background:#B4694A; }
+.ph-at .magpie-view-button:not(.secondary):hover{ background:#8f4f36; }
+.ph-pl .magpie-view-button:not(.secondary){ background:#4C8F72; }
+.ph-pl .magpie-view-button:not(.secondary):hover{ background:#356e57; }
+.ph-at .magpie-view-button.secondary{ color:#B4694A; border-color:#B4694A; }
+.ph-pl .magpie-view-button.secondary{ color:#4C8F72; border-color:#4C8F72; }
+
+.footer-note{
+  margin-top:30px;
+  padding-top:18px;
+  border-top:1px solid #e5e5e5;
+  color:#999;
+  font-size:11.5px;
+  line-height:1.7;
+  text-align:center;
+  font-family:"Lato","Noto Sans",sans-serif;
+}
+
+/* ---------- Demo player ---------- */
+#demoView{ display:none; }
+.demo-topbar{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  margin-bottom:6px;
+  max-width:550px;
+  margin-left:auto; margin-right:auto;
+}
+.back-link{
+  font-family:"Lato","Noto Sans",sans-serif;
+  font-size:13px;
+  color:#5187BA;
+  text-decoration:none;
+  cursor:pointer;
+  background:none;
+  border:none;
+  padding:6px 0;
+}
+.lang-badge{
+  font-family:"Lato","Noto Sans",sans-serif;
+  font-size:11px;
+  color:#999;
+}
+
+/* additions-marker box: clearly not part of the real UI */
+.addition-marker{
+  max-width:550px;
+  margin:14px auto 0;
+  border:2px dashed #B4694A;
+  border-radius:4px;
+  padding:10px 14px;
+  background:#fdf6f3;
+}
+.addition-marker .add-label{
+  font-family:"Lato","Noto Sans",sans-serif;
+  font-size:10.5px;
+  font-weight:700;
+  letter-spacing:0.5px;
+  text-transform:uppercase;
+  color:#B4694A;
+  margin-bottom:6px;
+}
+.addition-marker .meta-row{ display:flex; gap:8px; flex-wrap:wrap; margin-bottom:6px; }
+.meta-pill{
+  font-family:"Lato","Noto Sans",sans-serif;
+  font-size:11.5px;
+  padding:3px 10px;
+  border-radius:20px;
+  font-weight:700;
+  background:#B4694A;
+  color:white;
+}
+.meta-pill.outline{ background:white; border:1px solid #B4694A; color:#B4694A; }
+.addition-marker .meta-note{
+  font-family:"Lato","Noto Sans",sans-serif;
+  font-size:12px;
+  color:#8a5a48;
+  line-height:1.5;
+  font-style:italic;
+}
+
+.magpie-view-stimulus-container{
+  max-width:550px;
+  margin:26px auto 0;
+  text-align:center;
+}
+.stimulus-text{
+  color:rgba(0,0,0,0.87);
+  font-size:17px;
+  line-height:27px;
+  font-family:"Lato","Noto Sans",sans-serif;
+}
+
+.magpie-view-answer-container{ text-align:center; margin:36px auto; }
+.magpie-response-slider{
+  -webkit-appearance:none;
+  outline:none;
+  margin:0 25px;
+  padding:0;
+  width:280px;
+  max-width:60vw;
+  vertical-align:middle;
+}
+.magpie-response-slider::-webkit-slider-runnable-track{
+  background:#cbcbcb; border:none; outline:none; border-radius:10px; cursor:pointer; height:6px;
+}
+.magpie-response-slider::-moz-range-track{
+  background:#cbcbcb; border-radius:10px; cursor:pointer; height:6px;
+}
+.magpie-response-slider::-webkit-slider-thumb{
+  -webkit-appearance:none; background:#676767; border:4px solid #fefefe; border-radius:50%;
+  box-sizing:content-box; box-shadow:2px 1px 3px rgba(0,0,0,0.6); height:16px; margin-top:-9px; margin-left:-2px; width:16px;
+}
+.magpie-response-slider::-moz-range-thumb{
+  background:#676767; border:4px solid #fefefe; border-radius:50%; box-shadow:2px 1px 3px rgba(0,0,0,0.6); height:16px; width:16px;
+}
+.magpie-response-slider-option{
+  font-family:"Lato","Noto Sans",sans-serif;
+  font-size:15px; display:inline-block; line-height:17px; text-align:left; width:100px; vertical-align:middle;
+}
+.magpie-response-slider-option:first-child{ text-align:right; }
+
+/* item progress stack — same visual language as the real experiment addition */
+.magpie-item-progress{
+  position:fixed;
+  top:20px;
+  right:24px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  font-family:"Lato","Noto Sans",sans-serif;
+  z-index:1000;
+}
+.magpie-item-progress-stack{ position:relative; width:64px; height:46px; margin-bottom:6px; }
+.magpie-item-progress-sheet{
+  position:absolute; width:40px; height:30px; border:1px solid #5187BA; border-radius:4px; background:#fff;
+  box-shadow:1px 1px 3px rgba(0,0,0,0.2);
+}
+.magpie-item-progress-sheet.current{
+  background:#5187BA; color:#fff; font-weight:bold; font-size:13px; display:flex; align-items:center; justify-content:center;
+}
+.magpie-item-progress-label{ font-size:11px; color:#5187BA; text-align:center; }
+
+.nav-row{
+  display:flex;
+  justify-content:center;
+  gap:14px;
+  margin-top:10px;
+}
+.nav-row .magpie-view-button{ margin:0; min-width:84px; }
+
+.end-card{ text-align:center; padding:50px 10px; }
+.end-card p{ color:#777; font-size:14px; margin:14px 0 26px; font-family:"Lato","Noto Sans",sans-serif; }
+
+.progress-bar{
+  border:1px solid #5187BA;
+  border-radius:3px;
+  display:inline-block;
+  height:10px;
+  width:64px;
+  overflow:hidden;
+  margin-bottom:8px;
+}
+.progress-bar #filled{
+  background-color:#5187BA;
+  display:block;
+  height:10px;
+}
+
+.back-note{
+  font-family:"Lato","Noto Sans",sans-serif;
+  font-size:11px;
+  color:#999;
+  font-style:italic;
+  text-align:center;
+  margin-top:10px;
+  max-width:400px;
+  margin-left:auto; margin-right:auto;
+}
+
+@media (max-width:420px){
+  .ph-buttons{ flex-direction:column; align-items:center; }
+  .magpie-item-progress{ top:auto; bottom:16px; right:16px; }
+}
+</style>
+</head>
+<body>
+
+<div id="landingView">
+  <div class="magpie-view">
+    <h1 class="magpie-view-title" style="color:#5187BA;">Experimental Demo</h1>
+    <p class="magpie-view-text intro-text">Three example walkthroughs from our experiment on the projection, at-issueness, and pluggability of meaning components — the stimulus, prompts (questions posed to participants), and interface look exactly as they do in the real experiment. Additional explanations/elements are clearly marked as such.</p>
+
+    <div class="instr-box">
+      <div class="instr-lang-toggle">
+        <button class="lang-tab active" id="tabEn" onclick="setInstrLang('en')">English</button>
+        <button class="lang-tab" id="tabDe" onclick="setInstrLang('de')">Deutsch (Original)</button>
+      </div>
+      <h3 id="instrHeading">Instructions given to participants (excerpt)</h3>
+      <div id="instrEn">
+        <p>Imagine you are at a party and, on your way to the kitchen, overhear someone talking and asking a question.</p>
+        <p>For each question, you are asked several follow-up questions one after another; the person's question stays visible at the top of the page throughout.</p>
+        <p>You rate how strongly the person, by means of their question, commits themselves to a particular fact being true.</p>
+        <p>You do this by moving the slider on the scale to the left for "not at all" and to the right for "fully".</p>
+        <p>Please base your rating each time on the question that stays at the top of the page.</p>
+      </div>
+      <div id="instrDe" class="instr-content-en">
+        <p>Stellen Sie sich vor, dass Sie auf einer Party sind und auf dem Weg in die Küche hören, wie jemand sich unterhält und eine Frage stellt.</p>
+        <p>Zu jeder Frage werden Ihnen nacheinander mehrere Fragen gestellt; die Frage der Person bleibt dabei oben auf der Seite stehen.</p>
+        <p>Sie bewerten, wie sehr sich die fragende Person mit ihrer Frage darauf festlegt, dass ein bestimmter Sachverhalt zutrifft.</p>
+        <p>Beantworten Sie dies, indem Sie den Regler auf der Leiste nach links für „gar nicht“ und nach rechts für „voll und ganz“ verschieben.</p>
+        <p>Bitte machen Sie Ihre Bewertung jeweils anhand der Frage, die oben auf der Seite stehen bleibt.</p>
+      </div>
+    </div>
+
+    <div class="phenomenon ph-pj">
+      <div class="ph-name">Projectivity</div>
+      <div class="ph-underline"></div>
+      <div class="ph-desc">Selected examples from the full experiment: one exceptive item, one example each for both lexicalizations of PSP, CI, and SI, and two fillers — shown exactly as participants see them, with each person seeing only one trigger per item.</div>
+      <div class="ph-buttons">
+        <button class="magpie-view-button" onclick="startDemo('PJ','de')">Original (Deutsch)</button>
+        <button class="magpie-view-button secondary" onclick="startDemo('PJ','en')">English translation</button>
+      </div>
+    </div>
+
+    <div class="phenomenon ph-at">
+      <div class="ph-name">At-Issueness</div>
+      <div class="ph-underline"></div>
+      <div class="ph-desc">The same selection of examples as in Projectivity, but with the at-issueness question form.</div>
+      <div class="ph-buttons">
+        <button class="magpie-view-button" onclick="startDemo('AT','de')">Original (Deutsch)</button>
+        <button class="magpie-view-button secondary" onclick="startDemo('AT','en')">English translation</button>
+      </div>
+    </div>
+
+    <div class="phenomenon ph-pl">
+      <div class="ph-name">Pluggability</div>
+      <div class="ph-underline"></div>
+      <div class="ph-desc">The same selection of examples as in Projectivity, but embedded under say ("X says, that …") instead of as a question.</div>
+      <div class="ph-buttons">
+        <button class="magpie-view-button" onclick="startDemo('PL','de')">Original (Deutsch)</button>
+        <button class="magpie-view-button secondary" onclick="startDemo('PL','en')">English translation</button>
+      </div>
+    </div>
+
+    <div class="footer-note">
+      This is a non-interactive walkthrough for poster visitors. No data is stored or transmitted.<br/>
+      Dies ist eine nicht-interaktive Veranschaulichung für Postergäste. Es werden keine Daten gespeichert oder übermittelt.
+    </div>
+  </div>
+</div>
+
+<div id="demoView">
+  <div class="magpie-view">
+    <div class="demo-topbar">
+      <button class="back-link" onclick="goLanding()">← Overview / Übersicht</button>
+    </div>
+
+    <div class="addition-marker">
+      <div class="add-label">Addition — not shown to participants / Zusatz — im echten Experiment nicht sichtbar</div>
+      <div class="meta-row" id="metaPills"></div>
+      <div class="meta-note" id="metaNote"></div>
+    </div>
+
+    <div class="magpie-view-stimulus-container">
+      <div class="stimulus-text" id="stimulusText"></div>
+    </div>
+
+    <p class="magpie-view-question" id="questionText"></p>
+
+    <div class="magpie-view-answer-container">
+      <span class="magpie-response-slider-option" id="optLeft"></span>
+      <input type="range" min="0" max="100" value="50" class="magpie-response-slider" id="sliderInput" />
+      <span class="magpie-response-slider-option" id="optRight"></span>
+    </div>
+
+    <div class="magpie-item-progress" id="itemProgress">
+      <div class="progress-bar" id="overallProgressBar"><div id="filled"></div></div>
+      <div class="magpie-item-progress-stack" id="progressStack"></div>
+      <div class="magpie-item-progress-label" id="progressLabel"></div>
+    </div>
+
+    <div class="nav-row">
+      <button class="magpie-view-button secondary" id="btnBack" onclick="stepBack()">Zurück</button>
+      <button class="magpie-view-button" id="btnNext" onclick="stepNext()">Weiter</button>
+    </div>
+    <div class="back-note" id="backNote"></div>
+  </div>
+</div>
+
+<div id="endView" style="display:none;">
+  <div class="magpie-view">
+    <div class="end-card">
+      <h2 class="magpie-view-title" style="font-size:24px;">Das war die komplette Beispiel-Sequenz.</h2>
+      <p>That was the full example sequence.</p>
+      <button class="magpie-view-button" onclick="goLanding()">Zurück zur Übersicht / Back to overview</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const UNITS = [
+ {
+  "id": "item_1",
+  "kind": "item",
+  "topic_de": "Juraprofessoren",
+  "topic_en": "Law professors",
+  "rows": [
+   {
+    "trigger": "Außer",
+    "family": "Exc",
+    "mc": "POI",
+    "speaker": "Edith",
+    "stim_de": "Sind alle Juraprofessoren außer Tom zusammen in der Mensa?",
+    "stim_en": "Are all the law professors but Tom together in the cafeteria?",
+    "reporter_de": null,
+    "reporter_en": null,
+    "tq_de_pj": "Wie sehr legt sich Edith mit ihrer Frage darauf fest, dass es auf Tom zutrifft, dass er Juraprofessor ist?",
+    "tq_de_at": "Fragt Edith mit ihrer Frage danach, ob es auf Tom zutrifft, dass er Juraprofessor ist?",
+    "tq_de_pl": "Wie sehr legt sich Edith mit ihrer Äußerung darauf fest, dass es auf Tom zutrifft, dass er Juraprofessor ist?",
+    "tq_en_pj": "To what extent does Edith, by means of her question, commit herself that Tom is a law professor?",
+    "tq_en_at": "Does Edith, by means of her question, ask whether Tom is a law professor?",
+    "tq_en_pl": "To what extent does Edith, by means of her utterance, commit herself that Tom is a law professor?",
+    "stim_de_pl": "Marvin sagt, dass alle Juraprofessoren außer Tom zusammen in der Mensa wären.",
+    "stim_en_pl": "Marvin says that all the law professors except Tom would be together in the cafeteria."
+   },
+   {
+    "trigger": "Außer",
+    "family": "Exc",
+    "mc": "NC",
+    "speaker": "Edith",
+    "stim_de": "Sind alle Juraprofessoren außer Tom zusammen in der Mensa?",
+    "stim_en": "Are all the law professors but Tom together in the cafeteria?",
+    "reporter_de": null,
+    "reporter_en": null,
+    "tq_de_pj": "Wie sehr legt sich Edith mit ihrer Frage darauf fest, dass es auf Tom zutrifft, dass er nicht mit Juraprofessoren zusammen in der Mensa ist?",
+    "tq_de_at": "Fragt Edith mit ihrer Frage danach, ob es auf Tom zutrifft, dass er nicht mit Juraprofessoren zusammen in der Mensa ist?",
+    "tq_de_pl": "Wie sehr legt sich Edith mit ihrer Äußerung darauf fest, dass es auf Tom zutrifft, dass er nicht mit Juraprofessoren zusammen in der Mensa ist?",
+    "tq_en_pj": "To what extent does Edith, by means of her question, commit herself that Tom is not together with the law professors in the cafeteria?",
+    "tq_en_at": "Does Edith, by means of her question, ask whether Tom is not together with the law professors in the cafeteria?",
+    "tq_en_pl": "To what extent does Edith, by means of her utterance, commit herself that Tom is not together with the law professors in the cafeteria?",
+    "stim_de_pl": "Marvin sagt, dass alle Juraprofessoren außer Tom zusammen in der Mensa wären.",
+    "stim_en_pl": "Marvin says that all the law professors except Tom would be together in the cafeteria."
+   },
+   {
+    "trigger": "Außer",
+    "family": "Exc",
+    "mc": "OC",
+    "speaker": "Edith",
+    "stim_de": "Sind alle Juraprofessoren außer Tom zusammen in der Mensa?",
+    "stim_en": "Are all the law professors but Tom together in the cafeteria?",
+    "reporter_de": null,
+    "reporter_en": null,
+    "tq_de_pj": "Wie sehr legt sich Edith mit ihrer Frage darauf fest, dass es auf alle Juraprofessoren, die nicht Tom sind, zutrifft, dass sie zusammen in der Mensa sind?",
+    "tq_de_at": "Fragt Edith mit ihrer Frage danach, ob es auf alle Juraprofessoren, die nicht Tom sind, zutrifft, dass sie zusammen in der Mensa sind?",
+    "tq_de_pl": "Wie sehr legt sich Edith mit ihrer Äußerung darauf fest, dass es auf alle Juraprofessoren, die nicht Tom sind, zutrifft, dass sie zusammen in der Mensa sind?",
+    "tq_en_pj": "To what extent does Edith, by means of her question, commit herself that all the law professors other than Tom are together in the cafeteria?",
+    "tq_en_at": "Does Edith, by means of her question, ask whether all the law professors other than Tom are together in the cafeteria?",
+    "tq_en_pl": "To what extent does Edith, by means of her utterance, commit herself that all the law professors other than Tom are together in the cafeteria?",
+    "stim_de_pl": "Marvin sagt, dass alle Juraprofessoren außer Tom zusammen in der Mensa wären.",
+    "stim_en_pl": "Marvin says that all the law professors except Tom would be together in the cafeteria."
+   }
+  ]
+ },
+ {
+  "id": "item_2",
+  "kind": "item",
+  "topic_de": "Golfmitglieder",
+  "topic_en": "Golf members",
+  "rows": [
+   {
+    "trigger": "Aufhören",
+    "family": "PSP",
+    "mc": "PSP",
+    "speaker": "Carlotta",
+    "stim_de": "Haben alle Golfmitglieder aufgehört eine Jahresmitgliedschaft zu haben?",
+    "stim_en": "Have all the golf members stopped having an annual membership?",
+    "reporter_de": "Adam",
+    "reporter_en": "Adam",
+    "tq_de_pj": "Wie sehr legt sich Carlotta mit ihrer Frage darauf fest, dass es auf alle Golfmitglieder zutrifft, dass sie zuvor eine Jahresmitgliedschaft hatten?",
+    "tq_de_at": "Fragt Carlotta mit ihrer Frage danach, ob es auf alle Golfmitglieder zutrifft, dass sie zuvor eine Jahresmitgliedschaft hatten?",
+    "tq_de_pl": "Wie sehr legt sich Carlotta mit ihrer Äußerung darauf fest, dass es auf alle Golfmitglieder zutrifft, dass sie zuvor eine Jahresmitgliedschaft hatten?",
+    "tq_en_pj": "To what extent does Carlotta, by means of her question, commit herself that all the golf members had an annual membership before?",
+    "tq_en_at": "Does Carlotta, by means of her question, ask whether all the golf members had an annual membership before?",
+    "tq_en_pl": "To what extent does Carlotta, by means of her utterance, commit herself that all the golf members had an annual membership before?",
+    "stim_de_pl": "Adam sagt, dass alle Golfmitglieder aufgehört hätten eine Jahresmitgliedschaft zu haben.",
+    "stim_en_pl": "Adam says that all the golf members would have stopped having an annual membership."
+   },
+   {
+    "trigger": "Aufhören",
+    "family": "PSP",
+    "mc": "MC",
+    "speaker": "Carlotta",
+    "stim_de": "Haben alle Golfmitglieder aufgehört eine Jahresmitgliedschaft zu haben?",
+    "stim_en": "Have all the golf members stopped having an annual membership?",
+    "reporter_de": "Adam",
+    "reporter_en": "Adam",
+    "tq_de_pj": "Wie sehr legt sich Carlotta mit ihrer Frage darauf fest, dass es auf alle Golfmitglieder zutrifft, dass sie aktuell keine Jahresmitgliedschaft haben?",
+    "tq_de_at": "Fragt Carlotta mit ihrer Frage danach, ob es auf alle Golfmitglieder zutrifft, dass sie aktuell keine Jahresmitgliedschaft haben?",
+    "tq_de_pl": "Wie sehr legt sich Carlotta mit ihrer Äußerung darauf fest, dass es auf alle Golfmitglieder zutrifft, dass sie aktuell keine Jahresmitgliedschaft haben?",
+    "tq_en_pj": "To what extent does Carlotta, by means of her question, commit herself that all the golf members currently do not have an annual membership?",
+    "tq_en_at": "Does Carlotta, by means of her question, ask whether all the golf members currently do not have an annual membership?",
+    "tq_en_pl": "To what extent does Carlotta, by means of her utterance, commit herself that all the golf members currently do not have an annual membership?",
+    "stim_de_pl": "Adam sagt, dass alle Golfmitglieder aufgehört hätten eine Jahresmitgliedschaft zu haben.",
+    "stim_en_pl": "Adam says that all the golf members would have stopped having an annual membership."
+   }
+  ]
+ },
+ {
+  "id": "item_3",
+  "kind": "item",
+  "topic_de": "Wintersportler",
+  "topic_en": "Winter sports enthusiasts",
+  "rows": [
+   {
+    "trigger": "Appositive",
+    "family": "CI",
+    "mc": "CI",
+    "speaker": "Carolin",
+    "stim_de": "Können die Wintersportler, Max und seine Kameraden, die Pisten genießen?",
+    "stim_en": "Can the winter sports enthusiasts, Max and his companions, enjoy the slopes?",
+    "reporter_de": "Franz",
+    "reporter_en": "Franz",
+    "tq_de_pj": "Wie sehr legt sich Carolin mit ihrer Frage darauf fest, dass es auf die Wintersportler zutrifft, dass es Max und seine Kameraden sind?",
+    "tq_de_at": "Fragt Carolin mit ihrer Frage danach, ob es auf die Wintersportler zutrifft, dass es Max und seine Kameraden sind?",
+    "tq_de_pl": "Wie sehr legt sich Carolin mit ihrer Äußerung darauf fest, dass es auf die Wintersportler zutrifft, dass es Max und seine Kameraden sind?",
+    "tq_en_pj": "To what extent does Carolin, by means of her question, commit herself that the winter sports enthusiasts are Max and his companions?",
+    "tq_en_at": "Does Carolin, by means of her question, ask whether the winter sports enthusiasts are Max and his companions?",
+    "tq_en_pl": "To what extent does Carolin, by means of her utterance, commit herself that the winter sports enthusiasts are Max and his companions?",
+    "stim_de_pl": "Franz sagt, dass die Wintersportler, Max und seine Kameraden, die Pisten genießen könnten.",
+    "stim_en_pl": "Franz says that the winter sports enthusiasts, Max and his companions, would be able to enjoy the slopes."
+   },
+   {
+    "trigger": "Appositive",
+    "family": "CI",
+    "mc": "MC",
+    "speaker": "Carolin",
+    "stim_de": "Können die Wintersportler, Max und seine Kameraden, die Pisten genießen?",
+    "stim_en": "Can the winter sports enthusiasts, Max and his companions, enjoy the slopes?",
+    "reporter_de": "Franz",
+    "reporter_en": "Franz",
+    "tq_de_pj": "Wie sehr legt sich Carolin mit ihrer Frage darauf fest, dass es auf die Wintersportler zutrifft, dass sie die Pisten genießen können?",
+    "tq_de_at": "Fragt Carolin mit ihrer Frage danach, ob es auf die Wintersportler zutrifft, dass sie die Pisten genießen können?",
+    "tq_de_pl": "Wie sehr legt sich Carolin mit ihrer Äußerung darauf fest, dass es auf die Wintersportler zutrifft, dass sie die Pisten genießen können?",
+    "tq_en_pj": "To what extent does Carolin, by means of her question, commit herself that the winter sports enthusiasts can enjoy the slopes?",
+    "tq_en_at": "Does Carolin, by means of her question, ask whether the winter sports enthusiasts can enjoy the slopes?",
+    "tq_en_pl": "To what extent does Carolin, by means of her utterance, commit herself that the winter sports enthusiasts can enjoy the slopes?",
+    "stim_de_pl": "Franz sagt, dass die Wintersportler, Max und seine Kameraden, die Pisten genießen könnten.",
+    "stim_en_pl": "Franz says that the winter sports enthusiasts, Max and his companions, would be able to enjoy the slopes."
+   }
+  ]
+ },
+ {
+  "id": "item_4",
+  "kind": "item",
+  "topic_de": "Kindergartenkinder",
+  "topic_en": "Kindergarten children",
+  "rows": [
+   {
+    "trigger": "Einige",
+    "family": "SI",
+    "mc": "SI",
+    "speaker": "Joachim",
+    "stim_de": "Wollen einige Kindergartenkinder Bananen?",
+    "stim_en": "Do some kindergarten children want bananas?",
+    "reporter_de": "Leonie",
+    "reporter_en": "Leonie",
+    "tq_de_pj": "Wie sehr legt sich Joachim mit seiner Frage darauf fest, dass es auf nicht alle Kindergartenkinder zutrifft, dass sie Bananen wollen?",
+    "tq_de_at": "Fragt Joachim mit seiner Frage danach, ob es auf nicht alle Kindergartenkinder zutrifft, dass sie Bananen wollen?",
+    "tq_de_pl": "Wie sehr legt sich Joachim mit seiner Äußerung darauf fest, dass es auf nicht alle Kindergartenkinder zutrifft, dass sie Bananen wollen?",
+    "tq_en_pj": "To what extent does Joachim, by means of his question, commit himself that it is not true of all kindergarten children that they want bananas?",
+    "tq_en_at": "Does Joachim, by means of his question, ask whether it is not true of all kindergarten children that they want bananas?",
+    "tq_en_pl": "To what extent does Joachim, by means of his utterance, commit himself that it is not true of all kindergarten children that they want bananas?",
+    "stim_de_pl": "Leonie sagt, dass einige Kindergartenkinder Bananen wollten.",
+    "stim_en_pl": "Leonie says that some kindergarten children would want bananas."
+   },
+   {
+    "trigger": "Einige",
+    "family": "SI",
+    "mc": "MC",
+    "speaker": "Joachim",
+    "stim_de": "Wollen einige Kindergartenkinder Bananen?",
+    "stim_en": "Do some kindergarten children want bananas?",
+    "reporter_de": "Leonie",
+    "reporter_en": "Leonie",
+    "tq_de_pj": "Wie sehr legt sich Joachim mit seiner Frage darauf fest, dass es auf mindestens ein, vielleicht alle Kindergartenkinder zutrifft, dass sie Bananen wollen?",
+    "tq_de_at": "Fragt Joachim mit seiner Frage danach, ob es auf mindestens ein, vielleicht alle Kindergartenkinder zutrifft, dass sie Bananen wollen?",
+    "tq_de_pl": "Wie sehr legt sich Joachim mit seiner Äußerung darauf fest, dass es auf mindestens ein, vielleicht alle Kindergartenkinder zutrifft, dass sie Bananen wollen?",
+    "tq_en_pj": "To what extent does Joachim, by means of his question, commit himself that at least one, perhaps all, kindergarten children want bananas?",
+    "tq_en_at": "Does Joachim, by means of his question, ask whether at least one, perhaps all, kindergarten children want bananas?",
+    "tq_en_pl": "To what extent does Joachim, by means of his utterance, commit himself that at least one, perhaps all, kindergarten children want bananas?",
+    "stim_de_pl": "Leonie sagt, dass einige Kindergartenkinder Bananen wollten.",
+    "stim_en_pl": "Leonie says that some kindergarten children would want bananas."
+   }
+  ]
+ },
+ {
+  "id": "filler_517",
+  "kind": "filler",
+  "topic_de": "Filler (weil)",
+  "topic_en": "Filler (because)",
+  "rows": [
+   {
+    "trigger": "Weil",
+    "family": "Filler",
+    "mc": "TQ1",
+    "speaker": "Bernd",
+    "stim_de": "Hält Rosalie das neue Ausleihsystem der Bibliothek für gelungen, weil sie dort als Bibliothekarin arbeitet?",
+    "stim_en": "Does Rosalie consider the library's new lending system a success, because she works there as a librarian?",
+    "reporter_de": "Andrea",
+    "reporter_en": "Andrea",
+    "tq_de_pj": "Wie sehr legt sich Bernd mit seiner Frage darauf fest, dass es auf Rosalie zutrifft, dass sie in der Bibliothek arbeitet?",
+    "tq_de_at": "Fragt Bernd mit seiner Frage danach, ob es auf Rosalie zutrifft, dass sie in der Bibliothek arbeitet?",
+    "tq_de_pl": "Wie sehr legt sich Bernd mit seiner Äußerung darauf fest, dass es auf Rosalie zutrifft, dass sie in der Bibliothek arbeitet?",
+    "tq_en_pj": "To what extent does Bernd, by means of his question, commit himself that Rosalie works at the library?",
+    "tq_en_at": "Does Bernd, by means of his question, ask whether Rosalie works at the library?",
+    "tq_en_pl": "To what extent does Bernd, by means of his utterance, commit himself that Rosalie works at the library?",
+    "stim_de_pl": "Andrea sagt, dass Rosalie das neue Ausleihsystem der Bibliothek für gelungen hielte, weil sie dort als Bibliothekarin arbeitet.",
+    "stim_en_pl": "Andrea says that Rosalie would find the library's new lending system a success, because she works there as a librarian."
+   },
+   {
+    "trigger": "Weil",
+    "family": "Filler",
+    "mc": "TQ2",
+    "speaker": "Bernd",
+    "stim_de": "Hält Rosalie das neue Ausleihsystem der Bibliothek für gelungen, weil sie dort als Bibliothekarin arbeitet?",
+    "stim_en": "Does Rosalie consider the library's new lending system a success, because she works there as a librarian?",
+    "reporter_de": "Andrea",
+    "reporter_en": "Andrea",
+    "tq_de_pj": "Wie sehr legt sich Bernd mit seiner Frage darauf fest, dass es auf Rosalie zutrifft, dass sie als Bibliothekarin arbeitet?",
+    "tq_de_at": "Fragt Bernd mit seiner Frage danach, ob es auf Rosalie zutrifft, dass sie als Bibliothekarin arbeitet?",
+    "tq_de_pl": "Wie sehr legt sich Bernd mit seiner Äußerung darauf fest, dass es auf Rosalie zutrifft, dass sie als Bibliothekarin arbeitet?",
+    "tq_en_pj": "To what extent does Bernd, by means of his question, commit himself that Rosalie works as a librarian?",
+    "tq_en_at": "Does Bernd, by means of his question, ask whether Rosalie works as a librarian?",
+    "tq_en_pl": "To what extent does Bernd, by means of his utterance, commit himself that Rosalie works as a librarian?",
+    "stim_de_pl": "Andrea sagt, dass Rosalie das neue Ausleihsystem der Bibliothek für gelungen hielte, weil sie dort als Bibliothekarin arbeitet.",
+    "stim_en_pl": "Andrea says that Rosalie would find the library's new lending system a success, because she works there as a librarian."
+   }
+  ]
+ },
+ {
+  "id": "filler_518",
+  "kind": "filler",
+  "topic_de": "Filler (neutral)",
+  "topic_en": "Filler (neutral)",
+  "rows": [
+   {
+    "trigger": "Neutral",
+    "family": "Filler",
+    "mc": "TQ1",
+    "speaker": "Rupert",
+    "stim_de": "Repariert Vivian häufiger Rasenmäher?",
+    "stim_en": "Does Vivian repair lawnmowers often?",
+    "reporter_de": "Herbert",
+    "reporter_en": "Herbert",
+    "tq_de_pj": "Wie sehr legt sich Rupert mit seiner Frage darauf fest, dass es auf Vivian zutrifft, dass sie häufiger Rasenmäher repariert?",
+    "tq_de_at": "Fragt Rupert mit seiner Frage danach, ob es auf Vivian zutrifft, dass sie häufiger Rasenmäher repariert?",
+    "tq_de_pl": "Wie sehr legt sich Rupert mit seiner Aussage darauf fest, dass es auf Vivian zutrifft, dass sie häufiger Rasenmäher repariert?",
+    "tq_en_pj": "To what extent does Rupert, by means of his question, commit himself that Vivian repairs lawnmowers often?",
+    "tq_en_at": "Does Rupert, by means of his question, ask whether Vivian repairs lawnmowers often?",
+    "tq_en_pl": "To what extent does Rupert, by means of his utterance, commit himself that Vivian repairs lawnmowers often?",
+    "stim_de_pl": "Herbert sagt, dass Vivian häufiger Rasenmäher reparieren würde.",
+    "stim_en_pl": "Herbert says that Vivian would repair lawnmowers often."
+   },
+   {
+    "trigger": "Neutral",
+    "family": "Filler",
+    "mc": "TQ2",
+    "speaker": "Rupert",
+    "stim_de": "Repariert Vivian häufiger Rasenmäher?",
+    "stim_en": "Does Vivian repair lawnmowers often?",
+    "reporter_de": "Herbert",
+    "reporter_en": "Herbert",
+    "tq_de_pj": "Wie sehr legt sich Rupert mit seiner Frage darauf fest, dass es auf Vivian zutrifft, dass sie einen Rasenmäher besitzt?",
+    "tq_de_at": "Fragt Rupert mit seiner Frage danach, ob es auf Vivian zutrifft, dass sie einen Rasenmäher besitzt?",
+    "tq_de_pl": "Wie sehr legt sich Rupert mit seiner Aussage darauf fest, dass es auf Vivian zutrifft, dass sie einen Rasenmäher besitzt?",
+    "tq_en_pj": "To what extent does Rupert, by means of his question, commit himself that Vivian owns a lawnmower?",
+    "tq_en_at": "Does Rupert, by means of his question, ask whether Vivian owns a lawnmower?",
+    "tq_en_pl": "To what extent does Rupert, by means of his utterance, commit himself that Vivian owns a lawnmower?",
+    "stim_de_pl": "Herbert sagt, dass Vivian häufiger Rasenmäher reparieren würde.",
+    "stim_en_pl": "Herbert says that Vivian would repair lawnmowers often."
+   }
+  ]
+ },
+ {
+  "id": "item_6",
+  "kind": "item",
+  "topic_de": "Fallschirmspringer",
+  "topic_en": "Skydivers",
+  "rows": [
+   {
+    "trigger": "Wieder",
+    "family": "PSP",
+    "mc": "PSP",
+    "speaker": "Elisabeth",
+    "stim_de": "Sind alle Fallschirmspringer wieder vorsichtig?",
+    "stim_en": "Are all the skydivers careful again?",
+    "reporter_de": "Waltraud",
+    "reporter_en": "Waltraud",
+    "tq_de_pj": "Wie sehr legt sich Elisabeth mit ihrer Frage darauf fest, dass es auf alle Fallschirmspringer zutrifft, dass sie zuvor vorsichtig waren?",
+    "tq_de_at": "Fragt Elisabeth mit ihrer Frage danach, ob es auf alle Fallschirmspringer zutrifft, dass sie zuvor vorsichtig waren?",
+    "tq_de_pl": "Wie sehr legt sich Elisabeth mit ihrer Äußerung darauf fest, dass es auf alle Fallschirmspringer zutrifft, dass sie zuvor vorsichtig waren?",
+    "tq_en_pj": "To what extent does Elisabeth, by means of her question, commit herself that all the skydivers were careful before?",
+    "tq_en_at": "Does Elisabeth, by means of her question, ask whether all the skydivers were careful before?",
+    "tq_en_pl": "To what extent does Elisabeth, by means of her utterance, commit herself that all the skydivers were careful before?",
+    "stim_de_pl": "Günther sagt, dass alle Fallschirmspringer wieder vorsichtig wären.",
+    "stim_en_pl": "Waltraud says that all the skydivers would be careful again."
+   },
+   {
+    "trigger": "Wieder",
+    "family": "PSP",
+    "mc": "MC",
+    "speaker": "Elisabeth",
+    "stim_de": "Sind alle Fallschirmspringer wieder vorsichtig?",
+    "stim_en": "Are all the skydivers careful again?",
+    "reporter_de": "Waltraud",
+    "reporter_en": "Waltraud",
+    "tq_de_pj": "Wie sehr legt sich Elisabeth mit ihrer Frage darauf fest, dass es auf alle Fallschirmspringer zutrifft, dass sie aktuell vorsichtig sind?",
+    "tq_de_at": "Fragt Elisabeth mit ihrer Frage danach, ob es auf alle Fallschirmspringer zutrifft, dass sie aktuell vorsichtig sind?",
+    "tq_de_pl": "Wie sehr legt sich Elisabeth mit ihrer Äußerung darauf fest, dass es auf alle Fallschirmspringer zutrifft, dass sie aktuell vorsichtig sind?",
+    "tq_en_pj": "To what extent does Elisabeth, by means of her question, commit herself that all the skydivers are currently careful?",
+    "tq_en_at": "Does Elisabeth, by means of her question, ask whether all the skydivers are currently careful?",
+    "tq_en_pl": "To what extent does Elisabeth, by means of her utterance, commit herself that all the skydivers are currently careful?",
+    "stim_de_pl": "Günther sagt, dass alle Fallschirmspringer wieder vorsichtig wären.",
+    "stim_en_pl": "Waltraud says that all the skydivers would be careful again."
+   }
+  ]
+ },
+ {
+  "id": "item_7",
+  "kind": "item",
+  "topic_de": "Ärztinnen",
+  "topic_en": "Doctors",
+  "rows": [
+   {
+    "trigger": "NRRC",
+    "family": "CI",
+    "mc": "CI",
+    "speaker": "Frederik",
+    "stim_de": "Haben die Ärztinnen, die Kolleginnen von Hannah sind, Kaffee getrunken?",
+    "stim_en": "Did the doctors, who are colleagues of Hannah, drink coffee?",
+    "reporter_de": "Petra",
+    "reporter_en": "Petra",
+    "tq_de_pj": "Wie sehr legt sich Frederik mit seiner Frage darauf fest, dass es auf die Ärztinnen zutrifft, dass sie Kolleginnen von Hannah sind?",
+    "tq_de_at": "Fragt Frederik mit seiner Frage danach, ob es auf die Ärztinnen zutrifft, dass sie Kolleginnen von Hannah sind?",
+    "tq_de_pl": "Wie sehr legt sich Frederik mit seiner Äußerung darauf fest, dass es auf die Ärztinnen zutrifft, dass sie Kolleginnen von Hannah sind?",
+    "tq_en_pj": "To what extent does Frederik, by means of his question, commit himself that the doctors are colleagues of Hannah?",
+    "tq_en_at": "Does Frederik, by means of his question, ask whether the doctors are colleagues of Hannah?",
+    "tq_en_pl": "To what extent does Frederik, by means of his utterance, commit himself that the doctors are colleagues of Hannah?",
+    "stim_de_pl": "Alina sagt, dass die Ärztinnen, die Kolleginnen von Hannah sind, Kaffee getrunken hätten.",
+    "stim_en_pl": "Petra says that the doctors, who are colleagues of Hannah, would have drunk coffee."
+   },
+   {
+    "trigger": "NRRC",
+    "family": "CI",
+    "mc": "MC",
+    "speaker": "Frederik",
+    "stim_de": "Haben die Ärztinnen, die Kolleginnen von Hannah sind, Kaffee getrunken?",
+    "stim_en": "Did the doctors, who are colleagues of Hannah, drink coffee?",
+    "reporter_de": "Petra",
+    "reporter_en": "Petra",
+    "tq_de_pj": "Wie sehr legt sich Frederik mit seiner Frage darauf fest, dass es auf die Ärztinnen zutrifft, dass sie Kaffee getrunken haben?",
+    "tq_de_at": "Fragt Frederik mit seiner Frage danach, ob es auf die Ärztinnen zutrifft, dass sie Kaffee getrunken haben?",
+    "tq_de_pl": "Wie sehr legt sich Frederik mit seiner Äußerung darauf fest, dass es auf die Ärztinnen zutrifft, dass sie Kaffee getrunken haben?",
+    "tq_en_pj": "To what extent does Frederik, by means of his question, commit himself that the doctors drank coffee?",
+    "tq_en_at": "Does Frederik, by means of his question, ask whether the doctors drank coffee?",
+    "tq_en_pl": "To what extent does Frederik, by means of his utterance, commit himself that the doctors drank coffee?",
+    "stim_de_pl": "Alina sagt, dass die Ärztinnen, die Kolleginnen von Hannah sind, Kaffee getrunken hätten.",
+    "stim_en_pl": "Petra says that the doctors, who are colleagues of Hannah, would have drunk coffee."
+   }
+  ]
+ },
+ {
+  "id": "item_8",
+  "kind": "item",
+  "topic_de": "Sprachen Europas",
+  "topic_en": "Languages of Europe",
+  "rows": [
+   {
+    "trigger": "Oder",
+    "family": "SI",
+    "mc": "SI",
+    "speaker": "Sonja",
+    "stim_de": "Kann Baskisch einer Sprachfamilie oder Sprache zugeordnet werden?",
+    "stim_en": "Can Basque be classified into a language family or a language?",
+    "reporter_de": "Angelika",
+    "reporter_en": "Angelika",
+    "tq_de_pj": "Wie sehr legt sich Sonja mit ihrer Frage darauf fest, dass es auf Baskisch zutrifft, dass es einer Sprachfamilie oder Sprache zugeordnet werden kann, aber nicht beides?",
+    "tq_de_at": "Fragt Sonja mit ihrer Frage danach, ob es auf Baskisch zutrifft, dass es einer Sprachfamilie oder Sprache zugeordnet werden kann, aber nicht beides?",
+    "tq_de_pl": "Wie sehr legt sich Sonja mit ihrer Äußerung darauf fest, dass es auf Baskisch zutrifft, dass es einer Sprachfamilie oder Sprache zugeordnet werden kann, aber nicht beides?",
+    "tq_en_pj": "To what extent does Sonja, by means of her question, commit herself that Basque can be classified into a language family or a language, but not both?",
+    "tq_en_at": "Does Sonja, by means of her question, ask whether Basque can be classified into a language family or a language, but not both?",
+    "tq_en_pl": "To what extent does Sonja, by means of her utterance, commit herself that Basque can be classified into a language family or a language, but not both?",
+    "stim_de_pl": "Ken sagt, dass Baskisch einer Sprachfamilie oder Sprache zugeordnet werden könnte.",
+    "stim_en_pl": "Ken says that Basque could be classified into a language family or a language."
+   },
+   {
+    "trigger": "Oder",
+    "family": "SI",
+    "mc": "MC",
+    "speaker": "Sonja",
+    "stim_de": "Kann Baskisch einer Sprachfamilie oder Sprache zugeordnet werden?",
+    "stim_en": "Can Basque be classified into a language family or a language?",
+    "reporter_de": "Angelika",
+    "reporter_en": "Angelika",
+    "tq_de_pj": "Wie sehr legt sich Sonja mit ihrer Frage darauf fest, dass es auf Baskisch zutrifft, dass es einer Sprachfamilie oder Sprache zugeordnet werden kann oder beides?",
+    "tq_de_at": "Fragt Sonja mit ihrer Frage danach, ob es auf Baskisch zutrifft, dass es einer Sprachfamilie oder Sprache zugeordnet werden kann oder beides?",
+    "tq_de_pl": "Wie sehr legt sich Sonja mit ihrer Äußerung darauf fest, dass es auf Baskisch zutrifft, dass es einer Sprachfamilie oder Sprache zugeordnet werden kann oder beides?",
+    "tq_en_pj": "To what extent does Sonja, by means of her question, commit herself that Basque can be classified into a language family or a language, or both?",
+    "tq_en_at": "Does Sonja, by means of her question, ask whether Basque can be classified into a language family or a language, or both?",
+    "tq_en_pl": "To what extent does Sonja, by means of her utterance, commit herself that Basque can be classified into a language family or a language, or both?",
+    "stim_de_pl": "Ken sagt, dass Baskisch einer Sprachfamilie oder Sprache zugeordnet werden könnte.",
+    "stim_en_pl": "Ken says that Basque could be classified into a language family or a language."
+   }
+  ]
+ }
+];
+</script>
+<script>
+// ---------------------------------------------------------------------
+// Config: labels per group / language
+// ---------------------------------------------------------------------
+const GROUP_LABEL = {
+  PJ: { de: "Projectivity", en: "Projectivity" },
+  AT: { de: "At-Issueness", en: "At-Issueness" },
+  PL: { de: "Pluggability", en: "Pluggability" }
+};
+
+const FAMILY_LABEL = {
+  Exc:    { de: "Exzeptiv",                        en: "Exceptive" },
+  PSP:    { de: "Präsupposition",                 en: "Presupposition" },
+  CI:     { de: "Konventionelle Implikatur",       en: "Conventional implicature" },
+  SI:     { de: "Skalare Implikatur",              en: "Scalar implicature" },
+  Filler: { de: "Filler",                          en: "Filler" }
+};
+
+const TRIGGER_LABEL = {
+  "Außer":      { de: "außer",       en: "but" },
+  "Wieder":     { de: "wieder",      en: "again" },
+  "Aufhören":   { de: "aufhören",    en: "stop" },
+  "Appositive": { de: "Apposition",  en: "appositive" },
+  "NRRC":       { de: "Nicht-Restriktiver Relativsatz", en: "non-restrictive relative clause" },
+  "Einige":     { de: "einige",      en: "some" },
+  "Oder":       { de: "oder",        en: "or" }
+};
+
+const MC_LABEL = {
+  POI: { de: "Frage 1 von 3 · Presupposition of Inclusion (POI)", en: "Question 1 of 3 · Presupposition of Inclusion (POI)" },
+  NC:  { de: "Frage 2 von 3 · Negative Condition (NC)",           en: "Question 2 of 3 · Negative Condition (NC)" },
+  OC:  { de: "Frage 3 von 3 · Otherness Component (OC)",          en: "Question 3 of 3 · Otherness Component (OC)" },
+  PSP: { de: "Frage 1 von 2 · präsupponierter Inhalt (PSP)",     en: "Question 1 of 2 · presupposed content (PSP)" },
+  CI:  { de: "Frage 1 von 2 · konventionell implikatierter Inhalt (CI)", en: "Question 1 of 2 · conventionally implicated content (CI)" },
+  SI:  { de: "Frage 1 von 2 · konversationell skalar implikatierter Inhalt (SI)", en: "Question 1 of 2 · conversationally scalar-implicated content (SI)" },
+  MC:  { de: "Frage 2 von 2 · Hauptinhalt (MC)",                 en: "Question 2 of 2 · main content (MC)" },
+  TQ1: { de: "Frage 1 von 2",                                    en: "Question 1 of 2" },
+  TQ2: { de: "Frage 2 von 2",                                    en: "Question 2 of 2" }
+};
+
+const OPTION_LABEL = {
+  de: { left: "gar nicht", right: "voll und ganz" },
+  en: { left: "not at all", right: "fully" }
+};
+
+const META_NOTE = {
+  de: "Diese Angabe (Trigger-Kategorie & Frage-Typ) wird den Proband:innen im echten Experiment NICHT angezeigt — sie dient hier nur der Erläuterung.",
+  en: "This information (trigger category & question type) is NOT shown to participants in the real experiment — it is included here only for explanation."
+};
+
+const STIMULUS_LABEL = {
+  PJ: { de: "Stimulus (bleibt sichtbar, während sich die Fragen unten ändern)", en: "Stimulus (stays visible while the questions below change)" },
+  AT: { de: "Stimulus (bleibt sichtbar, während sich die Fragen unten ändern)", en: "Stimulus (stays visible while the questions below change)" },
+  PL: { de: "Stimulus (bleibt sichtbar, während sich die Fragen unten ändern)", en: "Stimulus (stays visible while the questions below change)" }
+};
+
+const UNIT_ORDER = ["item_1", "item_2", "item_6", "item_3", "item_7", "item_4", "item_8", "filler_517", "filler_518"];
+
+// ---------------------------------------------------------------------
+// Build a flat screen list for a given group ('PJ'|'AT'|'PL') and lang ('de'|'en')
+// ---------------------------------------------------------------------
+function buildScreens(group, lang) {
+  const screens = [];
+  const unitsById = {};
+  UNITS.forEach(u => { unitsById[u.id] = u; });
+
+  UNIT_ORDER.forEach(uid => {
+    const unit = unitsById[uid];
+    if (!unit) return;
+    unit.rows.forEach(r => {
+      let stim, speaker, question;
+      speaker = r.speaker;
+      if (group === "PL") {
+        stim = lang === "de" ? r.stim_de_pl : r.stim_en_pl;
+      } else {
+        stim = lang === "de" ? r.stim_de : r.stim_en;
+      }
+      const tqKey = "tq_" + lang + "_" + group.toLowerCase();
+      question = r[tqKey];
+
+      screens.push({
+        unitId: unit.id,
+        topic: lang === "de" ? unit.topic_de : unit.topic_en,
+        kind: unit.kind,
+        trigger: r.trigger,
+        family: r.family,
+        mc: r.mc,
+        speaker: speaker,
+        stimulus: stim,
+        question: question
+      });
+    });
+  });
+  return screens;
+}
+
+// ---------------------------------------------------------------------
+// State + navigation
+// ---------------------------------------------------------------------
+let currentScreens = [];
+let currentIndex = 0;
+let currentGroup = null;
+let currentLang = null;
+
+function setInstrLang(lang) {
+  document.getElementById("tabDe").classList.toggle("active", lang === "de");
+  document.getElementById("tabEn").classList.toggle("active", lang === "en");
+  document.getElementById("instrDe").style.display = lang === "de" ? "block" : "none";
+  document.getElementById("instrEn").style.display = lang === "en" ? "block" : "none";
+  document.getElementById("instrHeading").textContent = lang === "de"
+    ? "Hinweise an die Proband:innen (Auszug)"
+    : "Instructions given to participants (excerpt)";
+}
+
+function startDemo(group, lang) {
+  currentGroup = group;
+  currentLang = lang;
+  currentScreens = buildScreens(group, lang);
+  currentIndex = 0;
+  document.getElementById("landingView").style.display = "none";
+  document.getElementById("endView").style.display = "none";
+  document.getElementById("demoView").style.display = "block";
+  window.scrollTo(0, 0);
+  renderScreen();
+}
+
+function goLanding() {
+  document.getElementById("demoView").style.display = "none";
+  document.getElementById("endView").style.display = "none";
+  document.getElementById("landingView").style.display = "block";
+  window.scrollTo(0, 0);
+}
+
+function stepNext() {
+  if (currentIndex < currentScreens.length - 1) {
+    currentIndex++;
+    renderScreen();
+    window.scrollTo(0, 0);
+  } else {
+    showEnd();
+  }
+}
+
+function stepBack() {
+  if (currentIndex > 0) {
+    currentIndex--;
+    renderScreen();
+    window.scrollTo(0, 0);
+  }
+}
+
+function showEnd() {
+  document.getElementById("demoView").style.display = "none";
+  document.getElementById("endView").style.display = "block";
+  window.scrollTo(0, 0);
+}
+
+function renderScreen() {
+  const s = currentScreens[currentIndex];
+  const lang = currentLang;
+  const group = currentGroup;
+
+  // meta box (clearly marked addition)
+  const famLabel = FAMILY_LABEL[s.family] ? FAMILY_LABEL[s.family][lang] : s.family;
+  const trigLabel = (s.family !== "Filler" && TRIGGER_LABEL[s.trigger]) ? TRIGGER_LABEL[s.trigger][lang] : "";
+  const mcLabel = MC_LABEL[s.mc] ? MC_LABEL[s.mc][lang] : s.mc;
+
+  let pillsHtml = `<span class="meta-pill">${famLabel}</span>`;
+  if (trigLabel) {
+    pillsHtml += `<span class="meta-pill outline">${trigLabel}</span>`;
+  }
+  document.getElementById("metaPills").innerHTML = pillsHtml;
+  document.getElementById("metaNote").textContent = mcLabel;
+
+  // stimulus
+  let stim;
+  if (group === "PL") {
+    stim = lang === "de" ? s.stimulus : s.stimulus; // already resolved in buildScreens
+  } else {
+    stim = s.stimulus;
+  }
+  const quoteChar = lang === "de" ? ["„","“"] : ['"','"'];
+  document.getElementById("stimulusText").innerHTML =
+    `<b>${s.speaker}</b>: ${quoteChar[0]}${stim}${quoteChar[1]}`;
+
+  // question
+  document.getElementById("questionText").textContent = s.question;
+
+  // slider labels
+  document.getElementById("optLeft").textContent = OPTION_LABEL[lang].left;
+  document.getElementById("optRight").textContent = OPTION_LABEL[lang].right;
+  document.getElementById("sliderInput").value = 50;
+
+  // nav
+  document.getElementById("btnBack").disabled = currentIndex === 0;
+  const isLast = currentIndex === currentScreens.length - 1;
+  document.getElementById("btnNext").textContent = isLast
+    ? (lang === "de" ? "Fertig" : "Done")
+    : sameUnitAsNext(s) ? (lang === "de" ? "Nächste Frage" : "Next question") : (lang === "de" ? "Weiter" : "Next");
+
+  // item progress stack (mirrors the real experiment's addition)
+  const rowsInUnit = currentScreens.filter(x => x.unitId === s.unitId);
+  const idxInUnit = rowsInUnit.indexOf(s) + 1;
+  const totalInUnit = rowsInUnit.length;
+  renderProgressStack(idxInUnit, totalInUnit);
+
+  // overall progress bar (mirrors the real experiment's built-in progress bar; no text label, positioned with the item stack)
+  const pct = Math.round(((currentIndex + 1) / currentScreens.length) * 100);
+  document.getElementById("filled").style.width = pct + "%";
+
+  // back-button note: language-specific to the active demo version
+  document.getElementById("backNote").textContent = lang === "de"
+    ? "„Zurück“ ist nicht Teil des echten Experiments — hier nur zum erneuten Ansehen der Beispiele."
+    : "\"Back\" is not part of the real experiment — included here so you can review examples.";
+}
+
+function sameUnitAsNext(s) {
+  const next = currentScreens[currentIndex + 1];
+  return next && next.unitId === s.unitId;
+}
+
+function renderProgressStack(idx, total) {
+  const stackEl = document.getElementById("progressStack");
+  const labelEl = document.getElementById("progressLabel");
+  if (total <= 1) {
+    stackEl.innerHTML = "";
+    labelEl.textContent = "";
+    return;
+  }
+  let html = "";
+  for (let i = total; i >= 1; i--) {
+    const offset = (total - i) * 3;
+    const isCurrent = i === idx;
+    html += `<div class="magpie-item-progress-sheet${isCurrent ? ' current' : ''}" style="right:${offset}px; bottom:${offset}px;">${isCurrent ? idx : ''}</div>`;
+  }
+  stackEl.innerHTML = html;
+  labelEl.textContent = idx + " / " + total;
+}
+
+function groupColor(group) {
+  switch(group) {
+    case "PJ": return "#CC9A3B";
+    case "AT": return "#C25B44";
+    case "PL": return "#3F8477";
+    default: return "#9198B5";
+  }
+}
+
+</script>
+</body>
+</html>
