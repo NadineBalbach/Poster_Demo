@@ -378,29 +378,7 @@ body{ background:#ffffff; }
 <div id="landingView">
   <div class="magpie-view">
     <h1 class="magpie-view-title" style="color:#5187BA;">Experimental Demo</h1>
-    <p class="magpie-view-text intro-text">Three example walkthroughs from our experiment on the projection, at-issueness, and pluggability of meaning components — the stimulus, prompts (questions posed to participants), and interface look exactly as they do in the real experiment. Additional explanations/elements are clearly marked as such.</p>
-
-    <div class="instr-box">
-      <div class="instr-lang-toggle">
-        <button class="lang-tab active" id="tabEn" onclick="setInstrLang('en')">English</button>
-        <button class="lang-tab" id="tabDe" onclick="setInstrLang('de')">Deutsch (Original)</button>
-      </div>
-      <h3 id="instrHeading">Instructions given to participants (excerpt)</h3>
-      <div id="instrEn">
-        <p>Imagine you are at a party and, on your way to the kitchen, overhear someone talking and asking a question.</p>
-        <p>For each question, you are asked several follow-up questions one after another; the person's question stays visible at the top of the page throughout.</p>
-        <p>You rate how strongly the person, by means of their question, commits themselves to a particular fact being true.</p>
-        <p>You do this by moving the slider on the scale to the left for "not at all" and to the right for "fully".</p>
-        <p>Please base your rating each time on the question that stays at the top of the page.</p>
-      </div>
-      <div id="instrDe" class="instr-content-en">
-        <p>Stellen Sie sich vor, dass Sie auf einer Party sind und auf dem Weg in die Küche hören, wie jemand sich unterhält und eine Frage stellt.</p>
-        <p>Zu jeder Frage werden Ihnen nacheinander mehrere Fragen gestellt; die Frage der Person bleibt dabei oben auf der Seite stehen.</p>
-        <p>Sie bewerten, wie sehr sich die fragende Person mit ihrer Frage darauf festlegt, dass ein bestimmter Sachverhalt zutrifft.</p>
-        <p>Beantworten Sie dies, indem Sie den Regler auf der Leiste nach links für „gar nicht“ und nach rechts für „voll und ganz“ verschieben.</p>
-        <p>Bitte machen Sie Ihre Bewertung jeweils anhand der Frage, die oben auf der Seite stehen bleibt.</p>
-      </div>
-    </div>
+    <p class="magpie-view-text intro-text">Three example walkthroughs from our experiment on the projection, at-issueness, and pluggability of meaning components — the stimulus, prompts (questions posed to participants), and interface look exactly as they do in the real experiment. Additional explanations/elements are clearly marked as such. The original instructions given to participants are shown as the first screen of each walkthrough.</p>
 
     <div class="phenomenon ph-pj">
       <div class="ph-name">Projectivity</div>
@@ -425,7 +403,7 @@ body{ background:#ffffff; }
     <div class="phenomenon ph-pl">
       <div class="ph-name">Pluggability</div>
       <div class="ph-underline"></div>
-      <div class="ph-desc">The same selection of examples as in Projectivity, but embedded under say ("X says, that …") instead of as a question.</div>
+      <div class="ph-desc">The same selection of examples as in Projectivity, but embedded under say ("X says that …") instead of as a question.</div>
       <div class="ph-buttons">
         <button class="magpie-view-button" onclick="startDemo('PL','de')">Original (Deutsch)</button>
         <button class="magpie-view-button secondary" onclick="startDemo('PL','en')">English translation</button>
@@ -441,11 +419,11 @@ body{ background:#ffffff; }
       <h3>Impressum &amp; Kontakt</h3>
       <p>
         Nadine Balbach<br/>
-        Wissenschaftliche Mitarbeiterin<br/>
-        Seminar für Sprachwissenschaft<br/>
+        Wissenschaftliche Mitarbeiterin, assoziiert mit [SFB-Nummer und -Name]<br/>
+        [Institut/Fachbereich]<br/>
         Universität Tübingen<br/>
-        Keplerstr. 2, 72074, Tübingen<br/>
-        nadine.balbach@uni-tuebingen.de
+        [Straße, PLZ, Ort]<br/>
+        [Mailadresse]
       </p>
       <p>&copy; <span id="copyYear"></span> Nadine Balbach. Inhalte dieser Seite dienen ausschließlich der wissenschaftlichen Veranschaulichung.</p>
     </div>
@@ -458,8 +436,14 @@ body{ background:#ffffff; }
       <button class="back-link" onclick="goLanding()">← Overview / Übersicht</button>
     </div>
 
+    <div id="instructionsScreen" style="display:none;">
+      <h2 class="magpie-view-title" id="instrScreenTitle" style="font-size:24px;"></h2>
+      <div class="instr-box" id="instrScreenBody"></div>
+    </div>
+
+    <div id="trialScreen">
     <div class="addition-marker">
-      <div class="add-label">Addition — not shown to participants / Zusatz — im echten Experiment nicht sichtbar</div>
+      <div class="add-label" id="addLabel"></div>
       <div class="meta-row" id="metaPills"></div>
       <div class="meta-note" id="metaNote"></div>
     </div>
@@ -480,6 +464,7 @@ body{ background:#ffffff; }
       <div class="progress-bar" id="overallProgressBar"><div id="filled"></div></div>
       <div class="magpie-item-progress-stack" id="progressStack"></div>
       <div class="magpie-item-progress-label" id="progressLabel"></div>
+    </div>
     </div>
 
     <div class="nav-row">
@@ -524,7 +509,7 @@ const UNITS = [
     "tq_en_at": "Does Edith, by means of her question, ask whether Tom is a law professor?",
     "tq_en_pl": "To what extent does Edith, by means of her utterance, commit herself that Tom is a law professor?",
     "stim_de_pl": "Marvin sagt, dass alle Juraprofessoren außer Tom zusammen in der Mensa wären.",
-    "stim_en_pl": "Marvin says that all the law professors except Tom would be together in the cafeteria."
+    "stim_en_pl": "Marvin says that all law professors but Tom would be together in the cafeteria."
    },
    {
     "trigger": "Außer",
@@ -538,11 +523,11 @@ const UNITS = [
     "tq_de_pj": "Wie sehr legt sich Edith mit ihrer Frage darauf fest, dass es auf Tom zutrifft, dass er nicht mit Juraprofessoren zusammen in der Mensa ist?",
     "tq_de_at": "Fragt Edith mit ihrer Frage danach, ob es auf Tom zutrifft, dass er nicht mit Juraprofessoren zusammen in der Mensa ist?",
     "tq_de_pl": "Wie sehr legt sich Edith mit ihrer Äußerung darauf fest, dass es auf Tom zutrifft, dass er nicht mit Juraprofessoren zusammen in der Mensa ist?",
-    "tq_en_pj": "To what extent does Edith, by means of her question, commit herself that Tom is not together with the law professors in the cafeteria?",
-    "tq_en_at": "Does Edith, by means of her question, ask whether Tom is not together with the law professors in the cafeteria?",
-    "tq_en_pl": "To what extent does Edith, by means of her utterance, commit herself that Tom is not together with the law professors in the cafeteria?",
+    "tq_en_pj": "To what extent does Edith, by means of her question, commit herself that Tom is not together with law professors in the cafeteria?",
+    "tq_en_at": "Does Edith, by means of her question, ask whether Tom is not together with law professors in the cafeteria?",
+    "tq_en_pl": "To what extent does Edith, by means of her utterance, commit herself that Tom is not together with law professors in the cafeteria?",
     "stim_de_pl": "Marvin sagt, dass alle Juraprofessoren außer Tom zusammen in der Mensa wären.",
-    "stim_en_pl": "Marvin says that all the law professors except Tom would be together in the cafeteria."
+    "stim_en_pl": "Marvin says that all law professors but Tom would be together in the cafeteria."
    },
    {
     "trigger": "Außer",
@@ -556,11 +541,11 @@ const UNITS = [
     "tq_de_pj": "Wie sehr legt sich Edith mit ihrer Frage darauf fest, dass es auf alle Juraprofessoren, die nicht Tom sind, zutrifft, dass sie zusammen in der Mensa sind?",
     "tq_de_at": "Fragt Edith mit ihrer Frage danach, ob es auf alle Juraprofessoren, die nicht Tom sind, zutrifft, dass sie zusammen in der Mensa sind?",
     "tq_de_pl": "Wie sehr legt sich Edith mit ihrer Äußerung darauf fest, dass es auf alle Juraprofessoren, die nicht Tom sind, zutrifft, dass sie zusammen in der Mensa sind?",
-    "tq_en_pj": "To what extent does Edith, by means of her question, commit herself that all the law professors other than Tom are together in the cafeteria?",
-    "tq_en_at": "Does Edith, by means of her question, ask whether all the law professors other than Tom are together in the cafeteria?",
-    "tq_en_pl": "To what extent does Edith, by means of her utterance, commit herself that all the law professors other than Tom are together in the cafeteria?",
+    "tq_en_pj": "To what extent does Edith, by means of her question, commit herself that all law professors other than Tom are together in the cafeteria?",
+    "tq_en_at": "Does Edith, by means of her question, ask whether all law professors other than Tom are together in the cafeteria?",
+    "tq_en_pl": "To what extent does Edith, by means of her utterance, commit herself that all law professors other than Tom are together in the cafeteria?",
     "stim_de_pl": "Marvin sagt, dass alle Juraprofessoren außer Tom zusammen in der Mensa wären.",
-    "stim_en_pl": "Marvin says that all the law professors except Tom would be together in the cafeteria."
+    "stim_en_pl": "Marvin says that all law professors but Tom would be together in the cafeteria."
    }
   ]
  },
@@ -582,11 +567,11 @@ const UNITS = [
     "tq_de_pj": "Wie sehr legt sich Carlotta mit ihrer Frage darauf fest, dass es auf alle Golfmitglieder zutrifft, dass sie zuvor eine Jahresmitgliedschaft hatten?",
     "tq_de_at": "Fragt Carlotta mit ihrer Frage danach, ob es auf alle Golfmitglieder zutrifft, dass sie zuvor eine Jahresmitgliedschaft hatten?",
     "tq_de_pl": "Wie sehr legt sich Carlotta mit ihrer Äußerung darauf fest, dass es auf alle Golfmitglieder zutrifft, dass sie zuvor eine Jahresmitgliedschaft hatten?",
-    "tq_en_pj": "To what extent does Carlotta, by means of her question, commit herself that all the golf members had an annual membership before?",
-    "tq_en_at": "Does Carlotta, by means of her question, ask whether all the golf members had an annual membership before?",
-    "tq_en_pl": "To what extent does Carlotta, by means of her utterance, commit herself that all the golf members had an annual membership before?",
+    "tq_en_pj": "To what extent does Carlotta, by means of her question, commit herself that all golf members had an annual membership before?",
+    "tq_en_at": "Does Carlotta, by means of her question, ask whether all golf members had an annual membership before?",
+    "tq_en_pl": "To what extent does Carlotta, by means of her utterance, commit herself that all golf members had an annual membership before?",
     "stim_de_pl": "Adam sagt, dass alle Golfmitglieder aufgehört hätten eine Jahresmitgliedschaft zu haben.",
-    "stim_en_pl": "Adam says that all the golf members would have stopped having an annual membership."
+    "stim_en_pl": "Adam says that all golf members would have stopped having an annual membership."
    },
    {
     "trigger": "Aufhören",
@@ -600,11 +585,11 @@ const UNITS = [
     "tq_de_pj": "Wie sehr legt sich Carlotta mit ihrer Frage darauf fest, dass es auf alle Golfmitglieder zutrifft, dass sie aktuell keine Jahresmitgliedschaft haben?",
     "tq_de_at": "Fragt Carlotta mit ihrer Frage danach, ob es auf alle Golfmitglieder zutrifft, dass sie aktuell keine Jahresmitgliedschaft haben?",
     "tq_de_pl": "Wie sehr legt sich Carlotta mit ihrer Äußerung darauf fest, dass es auf alle Golfmitglieder zutrifft, dass sie aktuell keine Jahresmitgliedschaft haben?",
-    "tq_en_pj": "To what extent does Carlotta, by means of her question, commit herself that all the golf members currently do not have an annual membership?",
-    "tq_en_at": "Does Carlotta, by means of her question, ask whether all the golf members currently do not have an annual membership?",
-    "tq_en_pl": "To what extent does Carlotta, by means of her utterance, commit herself that all the golf members currently do not have an annual membership?",
+    "tq_en_pj": "To what extent does Carlotta, by means of her question, commit herself that all golf members currently do not have an annual membership?",
+    "tq_en_at": "Does Carlotta, by means of her question, ask whether all golf members currently do not have an annual membership?",
+    "tq_en_pl": "To what extent does Carlotta, by means of her utterance, commit herself that all golf members currently do not have an annual membership?",
     "stim_de_pl": "Adam sagt, dass alle Golfmitglieder aufgehört hätten eine Jahresmitgliedschaft zu haben.",
-    "stim_en_pl": "Adam says that all the golf members would have stopped having an annual membership."
+    "stim_en_pl": "Adam says that all golf members would have stopped having an annual membership."
    }
   ]
  },
@@ -802,11 +787,11 @@ const UNITS = [
     "tq_de_pj": "Wie sehr legt sich Elisabeth mit ihrer Frage darauf fest, dass es auf alle Fallschirmspringer zutrifft, dass sie zuvor vorsichtig waren?",
     "tq_de_at": "Fragt Elisabeth mit ihrer Frage danach, ob es auf alle Fallschirmspringer zutrifft, dass sie zuvor vorsichtig waren?",
     "tq_de_pl": "Wie sehr legt sich Elisabeth mit ihrer Äußerung darauf fest, dass es auf alle Fallschirmspringer zutrifft, dass sie zuvor vorsichtig waren?",
-    "tq_en_pj": "To what extent does Elisabeth, by means of her question, commit herself that all the skydivers were careful before?",
-    "tq_en_at": "Does Elisabeth, by means of her question, ask whether all the skydivers were careful before?",
-    "tq_en_pl": "To what extent does Elisabeth, by means of her utterance, commit herself that all the skydivers were careful before?",
+    "tq_en_pj": "To what extent does Elisabeth, by means of her question, commit herself that all skydivers were careful before?",
+    "tq_en_at": "Does Elisabeth, by means of her question, ask whether all skydivers were careful before?",
+    "tq_en_pl": "To what extent does Elisabeth, by means of her utterance, commit herself that all skydivers were careful before?",
     "stim_de_pl": "Günther sagt, dass alle Fallschirmspringer wieder vorsichtig wären.",
-    "stim_en_pl": "Waltraud says that all the skydivers would be careful again."
+    "stim_en_pl": "Waltraud says that all skydivers would be careful again."
    },
    {
     "trigger": "Wieder",
@@ -820,11 +805,11 @@ const UNITS = [
     "tq_de_pj": "Wie sehr legt sich Elisabeth mit ihrer Frage darauf fest, dass es auf alle Fallschirmspringer zutrifft, dass sie aktuell vorsichtig sind?",
     "tq_de_at": "Fragt Elisabeth mit ihrer Frage danach, ob es auf alle Fallschirmspringer zutrifft, dass sie aktuell vorsichtig sind?",
     "tq_de_pl": "Wie sehr legt sich Elisabeth mit ihrer Äußerung darauf fest, dass es auf alle Fallschirmspringer zutrifft, dass sie aktuell vorsichtig sind?",
-    "tq_en_pj": "To what extent does Elisabeth, by means of her question, commit herself that all the skydivers are currently careful?",
-    "tq_en_at": "Does Elisabeth, by means of her question, ask whether all the skydivers are currently careful?",
-    "tq_en_pl": "To what extent does Elisabeth, by means of her utterance, commit herself that all the skydivers are currently careful?",
+    "tq_en_pj": "To what extent does Elisabeth, by means of her question, commit herself that all skydivers are currently careful?",
+    "tq_en_at": "Does Elisabeth, by means of her question, ask whether all skydivers are currently careful?",
+    "tq_en_pl": "To what extent does Elisabeth, by means of her utterance, commit herself that all skydivers are currently careful?",
     "stim_de_pl": "Günther sagt, dass alle Fallschirmspringer wieder vorsichtig wären.",
-    "stim_en_pl": "Waltraud says that all the skydivers would be careful again."
+    "stim_en_pl": "Waltraud says that all skydivers would be careful again."
    }
   ]
  },
@@ -1021,22 +1006,56 @@ let currentScreens = [];
 let currentIndex = 0;
 let currentGroup = null;
 let currentLang = null;
+let onInstructions = false;
 
-function setInstrLang(lang) {
-  document.getElementById("tabDe").classList.toggle("active", lang === "de");
-  document.getElementById("tabEn").classList.toggle("active", lang === "en");
-  document.getElementById("instrDe").style.display = lang === "de" ? "block" : "none";
-  document.getElementById("instrEn").style.display = lang === "en" ? "block" : "none";
-  document.getElementById("instrHeading").textContent = lang === "de"
-    ? "Hinweise an die Proband:innen (Auszug)"
-    : "Instructions given to participants (excerpt)";
-}
+// Real, verbatim participant instructions (instructions_rating_scale) from the
+// actual experiment files, per group. DE = original wording exactly as used;
+// EN = translation for this demo only (not shown to real participants).
+const REAL_INSTRUCTIONS = {
+  PJ: {
+    de: `Stellen Sie sich vor, dass Sie auf einer Party sind und auf dem Weg in die Küche hören, wie sich jemand unterhält und eine Frage stellt.
+Zu jeder Frage werden Ihnen nacheinander mehrere Fragen gestellt; die Frage der Person bleibt dabei oben auf der Seite stehen.
+Sie bewerten, wie in den Übungsdurchgängen, wie sehr sich die fragende Person mit ihrer Frage darauf festlegt, dass ein bestimmter Sachverhalt zutrifft.
+Beantworten Sie dies, indem Sie den Regler auf der Leiste nach links für „gar nicht“ und nach rechts für „voll und ganz“ verschieben.
+Bitte machen Sie Ihre Bewertung jeweils anhand der Frage, die oben auf der Seite stehen bleibt.`,
+    en: `Imagine you are at a party and, on your way to the kitchen, overhear someone talking and asking a question.
+For each question, you are asked several follow-up questions one after another; the person's question stays visible at the top of the page throughout.
+As in the practice trials, you rate how strongly the person asking, by means of their question, commits themselves to a particular fact being true.
+You do this by moving the slider on the scale to the left for "not at all" and to the right for "fully".
+Please base your rating each time on the question that stays at the top of the page.`
+  },
+  AT: {
+    de: `Stellen Sie sich vor, dass Sie auf einer Party sind und auf dem Weg in die Küche hören, wie sich jemand unterhält und eine Frage stellt.
+Zu jeder Frage werden Ihnen nacheinander mehrere Fragen gestellt; die Frage der Person bleibt dabei oben auf der Seite stehen.
+Sie bewerten, wie in den Übungsdurchgängen, ob die fragende Person mit ihrer Frage danach fragt, ob ein bestimmter Sachverhalt zutrifft.
+Beantworten Sie dies, indem Sie den Regler auf der Leiste nach links für „gar nicht“ und nach rechts für „voll und ganz“ verschieben.
+Bitte machen Sie Ihre Bewertung jeweils anhand der Frage, die oben auf der Seite stehen bleibt.`,
+    en: `Imagine you are at a party and, on your way to the kitchen, overhear someone talking and asking a question.
+For each question, you are asked several follow-up questions one after another; the person's question stays visible at the top of the page throughout.
+As in the practice trials, you rate whether the person, by means of their question, is actually asking whether a particular fact is true.
+You do this by moving the slider on the scale to the left for "not at all" and to the right for "fully".
+Please base your rating each time on the question that stays at the top of the page.`
+  },
+  PL: {
+    de: `Stellen Sie sich vor, dass Sie auf einer Party sind und auf dem Weg in die Küche hören, wie sich jemand unterhält.
+Zu jeder Äußerung werden Ihnen nacheinander mehrere Fragen gestellt; die Äußerung der Person bleibt dabei oben auf der Seite stehen.
+Sie bewerten, wie in den Übungsdurchgängen, wie sehr sich die Person mit ihrer Äußerung darauf festlegt, dass ein bestimmter Sachverhalt zutrifft.
+Beantworten Sie dies, indem Sie den Regler auf der Leiste nach links für „gar nicht“ und nach rechts für „voll und ganz“ verschieben.
+Bitte machen Sie Ihre Bewertung jeweils anhand der Äußerung, die oben auf der Seite stehen bleibt.`,
+    en: `Imagine you are at a party and, on your way to the kitchen, overhear someone talking.
+For each utterance, you are asked several follow-up questions one after another; the person's utterance stays visible at the top of the page throughout.
+As in the practice trials, you rate how strongly the person, by means of their utterance, commits themselves to a particular fact being true.
+You do this by moving the slider on the scale to the left for "not at all" and to the right for "fully".
+Please base your rating each time on the utterance that stays at the top of the page.`
+  }
+};
 
 function startDemo(group, lang) {
   currentGroup = group;
   currentLang = lang;
   currentScreens = buildScreens(group, lang);
   currentIndex = 0;
+  onInstructions = true;
   document.getElementById("landingView").style.display = "none";
   document.getElementById("endView").style.display = "none";
   document.getElementById("demoView").style.display = "block";
@@ -1052,6 +1071,12 @@ function goLanding() {
 }
 
 function stepNext() {
+  if (onInstructions) {
+    onInstructions = false;
+    renderScreen();
+    window.scrollTo(0, 0);
+    return;
+  }
   if (currentIndex < currentScreens.length - 1) {
     currentIndex++;
     renderScreen();
@@ -1062,11 +1087,15 @@ function stepNext() {
 }
 
 function stepBack() {
+  if (onInstructions) return;
   if (currentIndex > 0) {
     currentIndex--;
     renderScreen();
-    window.scrollTo(0, 0);
+  } else {
+    onInstructions = true;
+    renderScreen();
   }
+  window.scrollTo(0, 0);
 }
 
 function showEnd() {
@@ -1076,11 +1105,44 @@ function showEnd() {
 }
 
 function renderScreen() {
+  const lang = currentLang;
+  const group = currentGroup;
+
+  const instrScreenEl = document.getElementById("instructionsScreen");
+  const trialScreenEl = document.getElementById("trialScreen");
+
+  if (onInstructions) {
+    instrScreenEl.style.display = "block";
+    trialScreenEl.style.display = "none";
+    document.getElementById("instrScreenTitle").textContent = lang === "de"
+      ? "Hinweise an die Proband:innen (Original)"
+      : "Instructions given to participants (original)";
+    const text = REAL_INSTRUCTIONS[group][lang];
+    document.getElementById("instrScreenBody").innerHTML =
+      text.split("\n").map(p => `<p>${p}</p>`).join("");
+    document.getElementById("btnBack").disabled = true;
+    document.getElementById("btnBack").textContent = lang === "de" ? "Zurück" : "Back";
+    document.getElementById("btnNext").textContent = lang === "de" ? "Weiter" : "Next";
+    document.getElementById("filled").style.width = "0%";
+    document.getElementById("progressStack").innerHTML = "";
+    document.getElementById("progressLabel").textContent = "";
+    document.getElementById("backNote").textContent = "";
+    return;
+  }
+  instrScreenEl.style.display = "none";
+  trialScreenEl.style.display = "block";
+  renderTrialScreen();
+}
+
+function renderTrialScreen() {
   const s = currentScreens[currentIndex];
   const lang = currentLang;
   const group = currentGroup;
 
   // meta box (clearly marked addition)
+  document.getElementById("addLabel").textContent = lang === "de"
+    ? "Zusatz — im echten Experiment nicht sichtbar"
+    : "Addition — not shown to participants";
   const famLabel = FAMILY_LABEL[s.family] ? FAMILY_LABEL[s.family][lang] : s.family;
   const trigLabel = (s.family !== "Filler" && TRIGGER_LABEL[s.trigger]) ? TRIGGER_LABEL[s.trigger][lang] : "";
   const mcLabel = MC_LABEL[s.mc] ? MC_LABEL[s.mc][lang] : s.mc;
@@ -1112,7 +1174,8 @@ function renderScreen() {
   document.getElementById("sliderInput").value = 50;
 
   // nav
-  document.getElementById("btnBack").disabled = currentIndex === 0;
+  document.getElementById("btnBack").disabled = false;
+  document.getElementById("btnBack").textContent = lang === "de" ? "Zurück" : "Back";
   const isLast = currentIndex === currentScreens.length - 1;
   document.getElementById("btnNext").textContent = isLast
     ? (lang === "de" ? "Fertig" : "Done")
